@@ -4,21 +4,15 @@ import { Inputs } from './Components/Inputs';
 import { HeadersChild } from './Components/Headers/HeadersChild';
 import { Rows } from './Components/Rows';
 import { useState } from 'react';
+import { handleUsersReducer } from './reducers/handleUsersReducer';
+import { useReducer } from 'react';
 
 function App() {
   const [value, setChangeValue] = useState();
-  const [initialValue, addValue] = useState([]);
+  const [state, dispatch] = useReducer(handleUsersReducer, { text: [] });
 
   function inputChangeHandler(e) {
     setChangeValue(e.target.value);
-  }
-  function buttonClickHandler() {
-    let temp = {
-      text: value,
-      id: initialValue + 1,
-    }
-    let newValues = [...initialValue, temp];
-    addValue(newValues);
   }
 
   return (
@@ -26,9 +20,14 @@ function App() {
       <div className="w-30">
         <Headers>Users</Headers>
         <HeadersChild>Add Users</HeadersChild>
-        <Inputs placeholder="Enter User" name="userName" className="purple-600" onChange={inputChangeHandler} onClick={buttonClickHandler}>Add</Inputs>
+        <Inputs placeholder="Enter User" name="userName" className="purple-600" onChange={inputChangeHandler} onClick={() =>
+          dispatch({
+            type: "ADD",
+            payload: { name: value, id: state.text.length + 1 },
+          })
+        }>Add</Inputs>
         <HeadersChild>List of users</HeadersChild>
-        <Rows initialValue={initialValue} />
+        <Rows initialValue={state.text} dispatch={dispatch} />
       </div>
     </div>
   );
