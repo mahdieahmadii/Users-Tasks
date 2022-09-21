@@ -11,7 +11,7 @@ export function Inputs(props) {
                 />
                 <button
                     onClick={props.onClick}
-                    className={`text-white px-5 rounded-r-md bg-${props.className}`}
+                    className="text-white px-5 rounded-r-md bg-purple-600"
                 >
                     {props.children}
                 </button>
